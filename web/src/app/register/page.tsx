@@ -15,9 +15,9 @@ export default function Login() {
     }
 
     return (
-        <main className='flex min-h-screen flex-col items-center justify-between w-screen'>
+        <main className='flex min-h-screen w-screen flex-col items-center justify-between'>
             <div className='flex flex-col justify-center'>
-                <nav className='flex justify-between items-center w-screen px-16 py-5 shadow-lg'>
+                <nav className='flex w-screen items-center justify-between px-16 py-5 shadow-lg'>
                     <div className='flex items-center space-x-4'>
                         <div className='flex items-center'>
                             <a href='/' className='text-3xl font-bold text-[#2477B4]'>
@@ -29,34 +29,34 @@ export default function Login() {
                         </div>
                     </div>
                 </nav>
-                <div className='flex justify-center mt-24'>
-                    <div className='flex flex-col w-[40%] items-center space-y-8 bg-[#ffffff] shadow-2xl px-24 py-14 rounded-xl'>
-                        <h1 className='text-2xl text-center font-semibold text-[#223549]'>
+                <div className='mt-24 flex justify-center'>
+                    <div className='flex w-[40%] flex-col items-center space-y-8 rounded-xl bg-[#ffffff] px-24 py-14 shadow-2xl'>
+                        <h1 className='text-center text-2xl font-semibold text-[#223549]'>
                             Welcome back! Enter your details to register.
                         </h1>
                         <form
-                            className='flex flex-col w-full items-center space-y-4 mx-10'
+                            className='mx-10 flex w-full flex-col items-center space-y-4'
                             onSubmit={handleSubmit}
                         >
                             <input
-                                className='w-full p-3 border-2 border-black rounded-xl'
+                                className='w-full rounded-xl border-2 border-black p-3'
                                 type='email'
                                 placeholder='Email'
                             />
                             <input
-                                className='w-full p-3 border-2 border-black rounded-xl'
+                                className='w-full rounded-xl border-2 border-black p-3'
                                 type='password'
                                 placeholder='Password'
                             />
                             <button
-                                className='bg-black text-white p-3 w-[70%] rounded-xl hover:scale-[1.04] transition'
+                                className='w-[70%] rounded-xl bg-black p-3 text-white transition hover:scale-[1.04]'
                                 type='submit'
                             >
                                 Click me to register!
                             </button>
                             <p className='pt-2'>
                                 Already have an account?{' '}
-                                <a href='/login' className='text-[#223549] font-bold '>
+                                <a href='/login' className='font-bold text-[#223549] '>
                                     Login now
                                 </a>
                             </p>

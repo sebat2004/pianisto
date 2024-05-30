@@ -8,19 +8,19 @@ import { useState } from 'react'
 
 const DeleteModal = ({ transcriptionId, handleModalYes, handleModalNo }: any) => {
     return (
-        <div className='fixed top-0 left-0 w-full h-full bg-black bg-opacity-20 flex justify-center items-center'>
-            <div className='bg-white p-10 rounded-lg'>
+        <div className='fixed left-0 top-0 flex h-full w-full items-center justify-center bg-black bg-opacity-20'>
+            <div className='rounded-lg bg-white p-10'>
                 <p>Are you sure you want to delete this transcription?</p>
-                <div className='flex justify-center items-center gap-5 mt-5'>
+                <div className='mt-5 flex items-center justify-center gap-5'>
                     <button
                         onClick={handleModalYes}
-                        className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'
+                        className='rounded bg-red-500 px-4 py-2 font-bold text-white hover:bg-red-700'
                     >
                         Yes
                     </button>
                     <button
                         onClick={handleModalNo}
-                        className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+                        className='rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700'
                     >
                         No
                     </button>
@@ -72,30 +72,30 @@ const Transcriptions: React.FC = () => {
     return (
         <>
             <HomeNavbar />
-            <div className='flex flex-col justify-center items-center text-center mt-14 px-20'>
-                <div className='flex justify-between items-center w-[100%]'>
+            <div className='mt-14 flex flex-col items-center justify-center px-20 text-center'>
+                <div className='flex w-[100%] items-center justify-between'>
                     <p className='self-start text-3xl font-semibold'>Transcriptions</p>
                     {Object.keys(lastDeletedTranscription).length > 0 ? (
                         <button
-                            className='bg-black text-white p-3 rounded-xl hover:scale-[1.04] transition'
+                            className='rounded-xl bg-black p-3 text-white transition hover:scale-[1.04]'
                             onClick={handleUndo}
                         >
                             Undo Last Delete
                         </button>
                     ) : null}
                 </div>
-                <div className='flex flex-col justify-center items-center my-14 gap-5 w-[100%] shadow-xl bg-[#ffffff] rounded-lg'>
+                <div className='my-14 flex w-[100%] flex-col items-center justify-center gap-5 rounded-lg bg-[#ffffff] shadow-xl'>
                     {transcriptions.map((transcription) => (
                         <div
                             key={transcription.id}
-                            className='flex flex-col justify-center items-center gap-3 w-[100%]'
+                            className='flex w-[100%] flex-col items-center justify-center gap-3'
                         >
-                            <div className='flex justify-center items-center w-[50%] py-10 rounded-lg mt-10 gap-6'>
+                            <div className='mt-10 flex w-[50%] items-center justify-center gap-6 rounded-lg py-10'>
                                 <p className='text-2xl font-semibold'>{transcription.title}</p>
                                 <p>Date Added: {transcription.dateAdded}</p>
                                 <Link
                                     href='/home/practice/play'
-                                    className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+                                    className='rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700'
                                 >
                                     Play
                                 </Link>
@@ -104,7 +104,7 @@ const Transcriptions: React.FC = () => {
                                         setShowModal(true)
                                         setCurrentModalId(transcription.id)
                                     }}
-                                    className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'
+                                    className='rounded bg-red-500 px-4 py-2 font-bold text-white hover:bg-red-700'
                                 >
                                     Delete
                                 </button>
