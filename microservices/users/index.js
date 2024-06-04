@@ -4,11 +4,11 @@ const cors = require("cors");
 require("dotenv").config();
 const User = require("./models/user");
 
+const PORT = 3000;
+
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-const PORT = 3000;
-cors();
 
 // TODO: Input validation for all endpoints
 app.get("/:id", async (req, res) => {
