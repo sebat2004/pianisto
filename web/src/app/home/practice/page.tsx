@@ -1,9 +1,9 @@
 'use client'
 
+import { UserContext } from '@/app/providers'
 import HomeNavbar from '@/components/HomeNavbar'
-import { SearchParamsContext } from 'next/dist/shared/lib/hooks-client-context.shared-runtime'
 import Link from 'next/link'
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { useState } from 'react'
 
 const DeleteModal = ({ transcriptionId, handleModalYes, handleModalNo }: any) => {
@@ -30,41 +30,45 @@ const DeleteModal = ({ transcriptionId, handleModalYes, handleModalNo }: any) =>
     )
 }
 
+interface ITranscription {
+    _id: string
+    name: string
+    createdAt: string
+    userId: string
+    NoteSequence: {
+        pitch: number
+        startTime: number
+        endTime: number
+        velocity: number
+    }[]
+}
+
 const Transcriptions: React.FC = () => {
-    const [transcriptions, setTranscriptions] = useState([
-        {
-            id: 1,
-            title: 'Fur Elise',
-            dateAdded: '09/10/2021'
-        },
-        {
-            id: 2,
-            title: 'Moonlight Sonata',
-            dateAdded: '10/15/2021'
-        },
-        {
-            id: 3,
-            title: 'Canon in D',
-            dateAdded: '11/20/2021'
-        },
-        {
-            id: 4,
-            title: 'Clair de Lune',
-            dateAdded: '12/25/2021'
-        },
-        {
-            id: 5,
-            title: 'Prelude in C',
-            dateAdded: '01/01/2022'
-        }
-    ])
+    const [transcriptions, setTranscriptions] = useState<ITranscription[]>([])
     const [showModal, setShowModal] = useState(false)
     const [currentModalId, setCurrentModalId] = useState(0)
     const [lastDeletedTranscription, setLastDeletedTranscription] = useState({})
+    const { userId } = useContext(UserContext)
+
+    useEffect(() => {
+        ;(async () => {
+            const response = await fetch(`http://localhost:3001/transcriptions/${userId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Allow-Control-Allow-Origin': '*'
+                }
+            })
+                .then((res) => res.json())
+                .then((data) => setTranscriptions(data))
+                .catch((err) => console.error(err))
+            console.log(response)
+        })()
+    }, [userId])
 
     const handleUndo = () => {
         if (Object.keys(lastDeletedTranscription).length === 0) return
-        const newTranscriptions = [lastDeletedTranscription, ...transcriptions]
+        const newTranscriptions = [lastDeletedTranscription, ...transcriptions] as ITranscription[]
         setTranscriptions(newTranscriptions)
         setLastDeletedTranscription({})
     }
@@ -85,16 +89,16 @@ const Transcriptions: React.FC = () => {
                     ) : null}
                 </div>
                 <div className='my-14 flex w-[100%] flex-col items-center justify-center gap-5 rounded-lg bg-[#ffffff] shadow-xl'>
-                    {transcriptions.map((transcription) => (
+                    {transcriptions.map((transcription, idx) => (
                         <div
-                            key={transcription.id}
+                            key={idx}
                             className='flex w-[100%] flex-col items-center justify-center gap-3'
                         >
                             <div className='mt-10 flex w-[50%] items-center justify-center gap-6 rounded-lg py-10'>
-                                <p className='text-2xl font-semibold'>{transcription.title}</p>
-                                <p>Date Added: {transcription.dateAdded}</p>
+                                <p className='text-2xl font-semibold'>{transcription.name}</p>
+                                <p>Date Added: {transcription.createdAt}</p>
                                 <Link
-                                    href='/home/practice/play'
+                                    href={`/home/practice/play/?id=${transcription._id}`}
                                     className='rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700'
                                 >
                                     Play
@@ -102,19 +106,19 @@ const Transcriptions: React.FC = () => {
                                 <button
                                     onClick={() => {
                                         setShowModal(true)
-                                        setCurrentModalId(transcription.id)
+                                        setCurrentModalId(idx)
                                     }}
                                     className='rounded bg-red-500 px-4 py-2 font-bold text-white hover:bg-red-700'
                                 >
                                     Delete
                                 </button>
-                                {showModal && currentModalId == transcription.id ? (
+                                {showModal && currentModalId == idx ? (
                                     <DeleteModal
                                         transcriptionId={currentModalId}
                                         handleModalYes={() => {
                                             const newTranscriptions = transcriptions.filter(
                                                 (oldTranscription) =>
-                                                    oldTranscription.id !== transcription.id
+                                                    oldTranscription.name !== transcription.name
                                             )
                                             setLastDeletedTranscription(transcription)
                                             setTranscriptions(newTranscriptions)
