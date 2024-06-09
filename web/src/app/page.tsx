@@ -1,6 +1,7 @@
 'use client'
 import Navbar from '../components/Navbar'
 import useWidth from '@/hooks/useWidth'
+import Image from 'next/image'
 
 export default function Home() {
     const width = useWidth()
@@ -25,10 +26,12 @@ export default function Home() {
                             Start Learning Now
                         </a>
                     </div>
-                    <img
+                    <Image
                         className='border-r-3 mt-10 w-[95%] rounded-xl border-2 border-black md:w-[90%]'
                         src='/demo.svg'
                         alt='Piano'
+                        width={500}
+                        height={200}
                     />
                 </div>
             </div>
