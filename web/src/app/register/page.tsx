@@ -1,17 +1,40 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 
 export default function Login() {
+    const [formData, setFormData] = useState({
+        email: '',
+        password: ''
+    })
+
     const router = useRouter()
 
-    const redirect = (path: string) => {
-        router.push(path)
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target
+        setFormData((prev) => ({
+            ...prev,
+            [name]: value
+        }))
     }
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        redirect('/login')
+        console.log('Request to User service to Register a user')
+        await fetch('http://localhost:3002/user', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Allow-Control-Allow-Origin': '*'
+            },
+            body: JSON.stringify(formData)
+        })
+            .then((res) => res.json())
+            .then((data) => console.log(data))
+            .catch((err) => console.error(err))
+
+        router.push('/login')
     }
 
     return (
@@ -42,11 +65,15 @@ export default function Login() {
                                 className='w-full rounded-xl border-2 border-black p-3'
                                 type='email'
                                 placeholder='Email'
+                                name='email'
+                                onChange={handleChange}
                             />
                             <input
                                 className='w-full rounded-xl border-2 border-black p-3'
                                 type='password'
                                 placeholder='Password'
+                                name='password'
+                                onChange={handleChange}
                             />
                             <button
                                 className='w-[70%] rounded-xl bg-black p-3 text-white transition hover:scale-[1.04]'
