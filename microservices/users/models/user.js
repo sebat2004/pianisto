@@ -56,6 +56,27 @@ class User {
       return error;
     }
   }
+
+  async loginUser(email, password) {
+    console.log(email, password);
+    try {
+      const response = await db.oneOrNone(
+        "SELECT id, email FROM users WHERE email = $1 AND password = $2;",
+        [email, password]
+      );
+
+      return {
+        status: "success",
+        data: response,
+      };
+    } catch (error) {
+      console.log(error);
+      return {
+        status: "error",
+        message: "Invalid credentials",
+      };
+    }
+  }
 }
 
 module.exports = User;
