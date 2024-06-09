@@ -1,16 +1,62 @@
 'use client'
 import { useRouter } from 'next/navigation'
+import { useContext, useState } from 'react'
+import { UserContext } from '@/app/providers'
 
 export default function Login() {
+    const { userId, setUserId, userEmail, setUserEmail } = useContext(UserContext)
+    const [formData, setFormData] = useState({
+        email: '',
+        password: ''
+    })
+
     const router = useRouter()
 
     const redirect = (path: string) => {
         router.push(path)
     }
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target
+        setFormData((prev) => ({
+            ...prev,
+            [name]: value
+        }))
+        setUserEmail(formData.email)
+    }
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        redirect('/home')
+        console.log('Request to User service to Login a user')
+        const user = await fetch('http://localhost:3002/user/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Allow-Control-Allow-Origin': '*'
+            },
+            body: JSON.stringify(formData)
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                setUserId(data.id)
+                setUserEmail(data.email)
+                if (data.id !== '' && data.email !== '') {
+                    const body = {
+                        email: data.email,
+                        event: 'MissedTranscription'
+                    }
+                    console.log('Request to Email service for Missed Transcription')
+                    fetch('http://127.0.0.1:5000/send_email', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Allow-Control-Allow-Origin': '*'
+                        },
+                        body: JSON.stringify(body)
+                    }).then(() => redirect('/home'))
+                }
+            })
+            .catch(() => alert('Invalid credentials'))
     }
 
     return (
@@ -41,11 +87,15 @@ export default function Login() {
                                 className='w-full rounded-xl border-2 border-black p-3'
                                 type='email'
                                 placeholder='Email'
+                                name='email'
+                                onChange={handleChange}
                             />
                             <input
                                 className='w-full rounded-xl border-2 border-black p-3'
                                 type='password'
+                                name='password'
                                 placeholder='Password'
+                                onChange={handleChange}
                             />
                             <div className='flex w-[100%] justify-center'>
                                 <button
