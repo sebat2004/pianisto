@@ -1,0 +1,9 @@
+[submodule "microservices/yt-downloader/microservices/yt-downloader/ydl_api_ng"]
+	path = microservices/yt-downloader/microservices/yt-downloader/ydl_api_ng
+	url = https://github.com/Totonyus/ydl_api_ng.git
+[submodule "microservices/yt-downloader/ih"]
+	path = microservices/yt-downloader/ih
+	url = https://github.com/Totonyus/ydl_api_ng.git
+[submodule "microservices/yt-downloader/ydl_api"]
+	path = microservices/yt-downloader/ydl_api
+	url = https://github.com/Totonyus/ydl_api_ng.git
