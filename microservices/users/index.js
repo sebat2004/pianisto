@@ -4,7 +4,7 @@ const cors = require("cors");
 require("dotenv").config();
 const User = require("./models/user");
 
-const PORT = 3002;
+const PORT = 8081;
 
 app.use(cors());
 app.use(express.json());
@@ -45,7 +45,7 @@ app.post("/user/login", async (req, res) => {
     req.body.email,
     req.body.password
   );
-  console.log(response)
+
   if (response.status !== "success") {
     return res.status(401).send("Invalid credentials");
   }

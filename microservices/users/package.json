@@ -4,7 +4,7 @@
   "description": "user auth service for app",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js"
+    "start": "node index.js"
   },
   "author": "sebat2004",
   "license": "ISC",
