@@ -1,0 +1,27 @@
+services:
+  midi-generator:
+    build:
+      dockerfile: midi-generator.Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - midi-generator-db
+    develop:
+      watch:
+        - action: sync
+          path: ./microservices/midi-generator
+          target: /app
+          ignore:
+            - venv/
+        - action: rebuild
+          path: ./microservices/midi-generator/requirements.txt
+
+  midi-generator-db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: midi-generator
+    ports:
+      - "5432:5432"
+  
