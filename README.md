@@ -2,7 +2,7 @@
 
 <img src='./public/images/cover.png' />
 
-KeySight helps people learn the piano by transcribing any piano audio of their choosing and visualizing it with a custom-made video editor. 
+KeySight helps people learn the piano by transcribing any piano audio of their choosing and visualizing it with a custom-made video editor.
 
 If you have ever struggled to find a YouTube tutorial for a song you love, or want to visualize a great piano cover you have heard, then this is the application for you!
 
@@ -22,7 +22,7 @@ If you have ever struggled to find a YouTube tutorial for a song you love, or wa
 
 ##### Backend
 
-- [Node.js](https://nodejs.org/en) and [Express.js](https://expressjs.com/) to build the REST API's that lie in some of the microservices
+- [Node.js](https://nodejs.org/en) and [Express.js](https://expressjs.com/) to build the REST API's that lie in some of the services
 - [FastAPI](https://fastapi.tiangolo.com/) for quick API responses and help KeySight utilize Python's machine learning capabilities
 - [PostgreSQL](https://www.postgresql.org/) for our primary data store
 - [Magenta's Piano Transcription Model](https://magenta.tensorflow.org/onsets-frames) to transcribe piano audio to MIDI output
@@ -53,11 +53,11 @@ npm run dev
 
 ##### Backend
 
-If you want to interact with the different microservices we have, follow the next few steps to start up each service. (There will me a Docker Compose file in the near future to make this much easier).
+If you want to interact with the different services we have, follow the next few steps to start up each service. (There will me a Docker Compose file in the near future to make this much easier).
 
 ```bash
-# Change into the microservices directory
-cd keysight/microservices
+# Change into the services directory
+cd keysight/services
 ```
 
 ##### Users microservice
@@ -80,5 +80,3 @@ touch .env
 npm run start
 
 ```
-
-

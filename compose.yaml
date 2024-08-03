@@ -9,12 +9,12 @@ services:
     develop:
       watch:
         - action: sync
-          path: ./microservices/midi-generator
+          path: ./services/midi-generator
           target: /app
           ignore:
             - venv/
         - action: rebuild
-          path: ./microservices/midi-generator/requirements.txt
+          path: ./services/midi-generator/requirements.txt
 
   midi-generator-db:
     image: postgres:13
@@ -35,12 +35,12 @@ services:
     develop:
       watch:
         - action: sync
-          path: ./microservices/users
+          path: ./services/users
           target: /app
           ignore:
             - node_modules/
         - action: rebuild
-          path: ./microservices/users/package.json
+          path: ./services/users/package.json
 
   users-db:
     image: postgres:13
@@ -61,12 +61,12 @@ services:
     develop:
       watch:
         - action: sync
-          path: ./microservices/yt-downloader
+          path: ./services/yt-downloader
           target: /app
           ignore:
             - node_modules/
         - action: rebuild
-          path: ./microservices/yt-downloader/package.json
+          path: ./services/yt-downloader/package.json
     networks:
       - ydl_api_ng
 
@@ -79,10 +79,10 @@ services:
     ports:
       - 5011:80
     volumes:
-      - ./microservices/yt-downloader/params:/app/params
-      - ./microservices/yt-downloader/logs:/app/logs
-      - ./microservices/yt-downloader/downloads:/app/downloads
-      - ./microservices/yt-downloader/data:/app/data
+      - ./services/yt-downloader/params:/app/params
+      - ./services/yt-downloader/logs:/app/logs
+      - ./services/yt-downloader/downloads:/app/downloads
+      - ./services/yt-downloader/data:/app/data
       - /etc/localtime:/etc/localtime:ro
     environment:
       - UID=1000

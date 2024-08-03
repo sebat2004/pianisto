@@ -5,9 +5,9 @@ USER root
 RUN apk --no-cache add curl
 USER app
 WORKDIR /app
-COPY --chown=app:node ./microservices/users/package*.json ./
+COPY --chown=app:node ./services/users/package*.json ./
 RUN npm install
-COPY --chown=app:node ./microservices/users .
+COPY --chown=app:node ./services/users .
 EXPOSE 8081
 
 CMD [ "npm", "run", "start"]
