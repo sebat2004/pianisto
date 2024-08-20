@@ -7,7 +7,7 @@ COPY ./services/midi-generator/files /app/files
 COPY ./services/midi-generator/model /app/model
 
 RUN apt-get -y update && apt-get -y upgrade && apt-get -y install libsndfile1
-RUN apt -y update && apt install ffmpeg
+RUN apt -y update && apt install ffmpeg -y
 RUN ffmpeg -h
 RUN pip install --no-cache-dir --upgrade -r /app/requirements.txt
 

@@ -4,8 +4,15 @@ from fastapi.responses import FileResponse
 import os
 
 from model.transcriptions import generateTranscription
+from .db import getDbPool
 
-app = FastAPI()
+@asynccontextmanager
+async def lifespan(a):
+   pool = await getDbPool()
+   yield {"pool": pool}
+   await pool.close()
+ 
+app = FastAPI(lifespan=lifespan)
 
 @app.post("/transcriptions")
 async def createTranscription(file: UploadFile = File(...)):
