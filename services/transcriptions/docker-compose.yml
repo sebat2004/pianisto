@@ -1,9 +1,0 @@
-services:
-  postgres: # Postgres Database
-    image: postgres:latest
-    ports:
-      - "5432:5432" # Reachable on localhost:5432 or postgres:5432 from within the Docker network
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: keysight-transcriptions

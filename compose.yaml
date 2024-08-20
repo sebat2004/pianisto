@@ -19,9 +19,11 @@ services:
   midi-generator-db:
     image: postgres:13
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: midi-generator
+      DB_HOST: midi-generator-db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_NAME: midi-generator
     ports:
       - "5432:5432"
 
