@@ -10,12 +10,14 @@
         "prepare": "husky"
     },
     "dependencies": {
-        "@magenta/music": "^1.20.0",
+        "@auth0/nextjs-auth0": "^3.5.0",
         "next": "14.2.1",
+        "next-auth": "^5.0.0-beta.20",
         "react": "^18",
         "react-dom": "^18",
         "tf": "^1.0.1",
-        "tone": "^15.0.4"
+        "tone": "^15.0.4",
+        "zustand": "^4.5.4"
     },
     "devDependencies": {
         "@types/node": "^20",
