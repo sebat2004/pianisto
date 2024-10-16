@@ -1,3 +1,5 @@
+terraform fmt
+
 cd web
 prettier . --write
 npm run lint
