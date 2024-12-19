@@ -23,7 +23,6 @@ app = FastAPI(lifespan=lifespan)
 
 @app.post("/transcriptions")
 async def createTranscription(request: Request, file: UploadFile = File(...)):
-    print(file.filename)
     if file.size > 20000000: # 20mb 
         raise HTTPException(400, "File size too large")
 
@@ -44,7 +43,6 @@ async def createTranscription(request: Request, file: UploadFile = File(...)):
     midiFilePath = outputFolderPath+fileName+'.mid'
     write_events_to_midi(start_time=0, note_events=est_note_events, 
         pedal_events=est_pedal_events, midi_path=midiFilePath)
-    print('Write out to {}'.format(midiFilePath))
 
     noteSequenceProto = midi_file_to_note_sequence(midiFilePath)
     noteSequence = MessageToDict(noteSequenceProto)

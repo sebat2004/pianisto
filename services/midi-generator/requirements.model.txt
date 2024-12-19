@@ -1,0 +1,5 @@
+piano_transcription_inference @ git+https://github.com/sebat2004/piano_transcription_inference
+torch
+numpy
+librosa==0.9.2
+boto3

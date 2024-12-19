@@ -2,6 +2,7 @@ FROM python:3.10
 
 WORKDIR /app
 
+COPY ./services/midi-generator/requirements.model.txt /app/requirements.model.txt
 COPY ./services/midi-generator/requirements.txt /app/requirements.txt
 COPY ./services/midi-generator/files /app/files
 COPY ./services/midi-generator/model /app/model

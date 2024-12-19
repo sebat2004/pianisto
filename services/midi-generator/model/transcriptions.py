@@ -16,35 +16,33 @@ async def getMidiEvents(file):
     return est_note_events, est_pedal_events
 
 mount_path = "./audio"
-s3_bucket = CloudBucket(
-    name="audio",
+s3Bucket = CloudBucket(
+    name="pianisto-transcriptions",
     mount_path=mount_path,
     config=CloudBucketConfig(
         access_key="ACCESS_KEY",
         secret_key="SECRET_KEY",
-        endpoint="https://pianisto-transcriptions.s3.us-west-2.amazonaws.com/"
+        region="us-west-2"
     ),
 )
+
+checkpointVolume = Volume(name="checkpoint", mount_path="./checkpoint")
 @function(
     name="generate-transcription",
-    cpu=3,
+    cpu=1,
     memory="16Gi",
     gpu="T4",
-    volumes=[s3_bucket],
+    volumes=[s3Bucket, checkpointVolume],
     image=Image(
         python_version="python3.10",
-        python_packages=[
-            "torch",
-            "numpy",
-            "librosa==0.9.2",
-        ],
+        python_packages="requirements.model.txt"
     )
+    .add_commands(["apt update -y", "apt install ffmpeg -y"])
 )
 def _getMidiEvents(fileName):
-    print(os.listdir("../audio"))
-    print(os.listdir("./checkpoint"))
     # Transcriptor
-    inputFilePath = f'../audio/{fileName}'
+    inputFilePath = os.path.join(s3Bucket.mount_path, fileName)
+
     (audio, _) = load_audio(inputFilePath, sr=sample_rate, mono=True)
 
     checkpoint_path = os.path.join(os.path.dirname(__file__), '../checkpoint/CRNN_note_F1=0.9677_pedal_F1=0.9186.pth')

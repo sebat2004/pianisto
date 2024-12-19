@@ -1,3 +1,13 @@
+secrets:
+  beam_token:
+    environment: "BEAM_CLOUD_DEFAULT_TOKEN"
+  aws_access_key_id:
+    environment: "AWS_ACCESS_KEY_ID"
+  aws_secret_access_key:
+    environment: "AWS_SECRET_ACCESS_KEY"
+  aws_region:
+    environment: "AWS_REGION"
+
 services:
   web:
     build:
@@ -24,6 +34,13 @@ services:
           path: ./web/package.json
 
   midi-generator:
+    env_file: ".env"
+    environment:
+      DB_HOST: midi-generator-db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_NAME: midi-generator
     build:
       dockerfile: midi-generator.Dockerfile
     ports:
@@ -43,11 +60,9 @@ services:
   midi-generator-db:
     image: postgres:13
     environment:
-      DB_HOST: midi-generator-db
-      DB_PORT: 5432
-      DB_USER: postgres
-      DB_PASSWORD: postgres
-      DB_NAME: midi-generator
+      POSTGRES_DB: midi-generator
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
     ports:
       - "5432:5432"
 
