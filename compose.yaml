@@ -1,15 +1,6 @@
-secrets:
-  beam_token:
-    environment: "BEAM_CLOUD_DEFAULT_TOKEN"
-  aws_access_key_id:
-    environment: "AWS_ACCESS_KEY_ID"
-  aws_secret_access_key:
-    environment: "AWS_SECRET_ACCESS_KEY"
-  aws_region:
-    environment: "AWS_REGION"
-
 services:
   web:
+    env_file: ".env"
     build:
       dockerfile: web.Dockerfile
     ports:
@@ -33,34 +24,58 @@ services:
         - action: rebuild
           path: ./web/package.json
 
-  midi-generator:
+  transcriptions:
     env_file: ".env"
     environment:
-      DB_HOST: midi-generator-db
+      DB_HOST: transcriptions-db
       DB_PORT: 5432
       DB_USER: postgres
       DB_PASSWORD: postgres
-      DB_NAME: midi-generator
+      DB_NAME: transcriptions
     build:
-      dockerfile: midi-generator.Dockerfile
+      dockerfile: transcriptions.Dockerfile
     ports:
       - "8080:8080"
     depends_on:
-      - midi-generator-db
+      - transcriptions-db
     develop:
       watch:
         - action: sync
-          path: ./services/midi-generator
+          path: ./services/transcriptions/api
           target: /app
           ignore:
             - venv/
         - action: rebuild
-          path: ./services/midi-generator/requirements.txt
+          path: ./services/transcriptions/requirements.txt
 
-  midi-generator-db:
+  midi-generator:
+    env_file: ".env"
+    environment:
+      DB_HOST: transcriptions-db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_NAME: transcriptions
+    build:
+      dockerfile: midi-generator.Dockerfile
+    ports:
+      - "8083:8080"
+    depends_on:
+      - transcriptions-db
+    develop:
+      watch:
+        - action: sync
+          path: ./services/transcriptions/midi-gen
+          target: /app
+          ignore:
+            - venv/
+        - action: rebuild
+          path: ./services/transcriptions/requirements.txt
+
+  transcriptions-db:
     image: postgres:13
     environment:
-      POSTGRES_DB: midi-generator
+      POSTGRES_DB: transcriptions
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     ports:
