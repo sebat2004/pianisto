@@ -3,3 +3,6 @@ terraform fmt
 cd web
 prettier . --write
 npm run lint
+
+cd ../services/midi-generator
+black .
